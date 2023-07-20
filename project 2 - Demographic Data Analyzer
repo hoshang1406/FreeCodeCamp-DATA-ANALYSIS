@@ -1,1 +1,46 @@
+import pandas as pd
+
+df = pd.read_csv(r"C:\Users\pc\Downloads\adult.data.csv\adult.data.csv")
+df.head()
+
+# Count the occurrences of each race
+df['race'].value_counts()
+
+# Calculate the mean age of males
+df[df['sex'] == 'Male']['age'].mean()
+
+# Calculate the percentage of people with Bachelors' education
+percentage_bachelors = (len(df[df['education'] == "Bachelors"]) / len(df)) * 100
+
+# Calculate the count and percentage of people with Bachelors, Masters, or Doctorate education and salary > 50K
+ae_count = len(df[(df['education'].isin(["Bachelors", "Masters", "Doctorate"])) & (df['salary'] == ">50K")])
+percentage_ae = (ae_count / len(df)) * 100
+
+print(f"Percentage with Bachelors, Masters, or Doctorate education and salary > 50K: {percentage_ae:.2f}%")
+
+# Calculate the minimum hours-per-week
+min_hours_per_week = df['hours-per-week'].min()
+
+# Calculate the percentage of high-income workers among those with minimum hours-per-week
+min_hours_workers = len(df[df['hours-per-week'] == min_hours_per_week])
+min_hours_income = len(df[(df['hours-per-week'] == min_hours_per_week) & (df['salary'] == '>50K')])
+
+# Handle division by zero (avoid ZeroDivisionError)
+percentage_min_hours = (min_hours_income / min_hours_workers) * 100 if min_hours_workers > 0 else 0
+
+print(f"Percentage of high-income workers among those with minimum hours-per-week: {percentage_min_hours:.2f}%")
+
+# Calculate the country with the highest percentage of high-income workers
+high_income_country = (df[df['salary'] == '>50K']['native-country'].value_counts() / df['native-country'].value_counts()) * 100
+country_high_income = high_income_country.idxmax()
+percentage_workers = high_income_country.max()
+
+print(f"The country with the highest percentage of high-income workers is {country_high_income}")
+print(f"The percentage of high-income workers in that country is {percentage_workers:.2f}%")
+
+# Find the most popular occupation among high-income workers from India
+hi_occupation = df[(df['salary'] == '>50K') & (df['native-country'] == 'India')]['occupation']
+most_popular_occ = hi_occupation.value_counts().idxmax()
+
+print(f"The most popular occupation among high-income workers from India is {most_popular_occ}")
 
