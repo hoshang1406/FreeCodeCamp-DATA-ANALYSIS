@@ -1,1 +1,17 @@
+import numpy as np
+import pandas as pd
+first = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+def calculate(first):
+        if len(first) != 9:
+            return "List must contain nine numbers."
+x = np.array(first).reshape(3, 3)
+result = {
+    k: [func(x, axis=ax).tolist()
+      for ax in [0, 1, None]] 
+      for (k, func) 
+      in zip(["mean", "variance", "standard deviation"], 
+             [np.mean, np.var, np.std])
+  } 
+result_dict = calculate(result)
+print(result)
 
